@@ -229,7 +229,8 @@ def post_labelindices(server, uuid, instance, indices, *, session=None):
         payload = indices
     elif isinstance(indices, Collection) and isinstance(indices[0], bytes):
         payload = b''.join(indices)
-    elif isinstance(indices, Collection) and isinstance(indices[0], LabelIndex):
+    elif (isinstance(indices, pd.Series) and isinstance(indices.iloc[0], LabelIndex)) or \
+            (isinstance(indices, Collection) and isinstance(indices[0], LabelIndex)):
         label_indices = LabelIndices()
         label_indices.indices.extend(indices)
         payload = label_indices.SerializeToString()
