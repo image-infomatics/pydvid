@@ -8,7 +8,9 @@ import pandas as pd
 from numba import jit
 from requests import HTTPError
 
-from ...util import tqdm_proxy, compute_parallel, iter_batches
+from ..lib.progress import tqdm_proxy
+from ..lib.parallel import compute_parallel
+from ..lib.iter import iter_batches
 from .. import dvid_api_wrapper
 
 # $ protoc --python_out=. neuclease/dvid/labelmap/labelops.proto

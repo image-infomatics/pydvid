@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
-from ...util import Timer, find_root, tree_to_dict
+from ..lib.time import Timer
+from ..lib.graph import find_root, tree_to_dict
+
 from .. import dvid_api_wrapper
 from ..kafka import read_kafka_messages
 

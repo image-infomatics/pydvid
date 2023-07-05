@@ -20,11 +20,19 @@ from dvidutils import LabelMapper
 from vigra.filters import multiBinaryErosion, distanceTransform
 from vigra.analysis import labelMultiArrayWithBackground
 
-from ...util import (Timer, round_box, extract_subvol, DEFAULT_TIMESTAMP, tqdm_proxy, find_root,
-                     ndrange, ndrange_array, box_to_slicing, compute_parallel, boxes_from_grid, box_shape,
-                     overwrite_subvol, iter_batches, extract_labels_from_volume, box_intersection, lexsort_columns,
-                     toposorted_ancestors, distance_transform, thickest_point_in_mask, encode_coords_to_uint64,
-                     sort_blockmajor)
+from ..lib.time import Timer, DEFAULT_TIMESTAMP
+from ..lib.box import round_box, extract_subvol, box_to_slicing, box_shape, overwrite_subvol, box_intersection
+from ..lib.grid import boxes_from_grid
+from ..lib.parallel import compute_parallel
+from ..lib.progress import tqdm_proxy
+from ..lib.graph import find_root, toposorted_ancestors
+from ..lib.range import ndrange, ndrange_array
+from ..lib.iter import iter_batches
+from ..lib.table import lexsort_columns 
+from ..lib.encode import encode_coords_to_uint64, sort_blockmajor
+
+from ..voxels import extract_labels_from_volume
+from ..segmentation import distance_transform, thickest_point_in_mask
 
 from .. import dvid_api_wrapper, fetch_generic_json, fetch_repo_info
 from ..server import fetch_server_info

@@ -8,9 +8,10 @@ from contextlib import closing
 import numpy as np
 import pandas as pd
 
-from ..util import fetch_file, post_file, tqdm_proxy, compute_parallel
+from .lib.progress import tqdm_proxy
+from .lib.parallel import compute_parallel
 from . import dvid_api_wrapper, fetch_generic_json
-from .repo import create_instance
+from .repo import create_instance, fetch_file, post_file
 
 
 @dvid_api_wrapper

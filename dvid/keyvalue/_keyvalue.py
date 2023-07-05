@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from ..lib.tqdm import tqdm_proxy
+from ..lib.progress import tqdm_proxy
 from ..lib.parallel import compute_parallel
 from ..lib.skeleton import swc_to_dataframe
 from .. import dvid_api_wrapper, fetch_generic_json

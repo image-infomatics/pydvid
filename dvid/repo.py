@@ -851,3 +851,79 @@ def is_locked(server, uuid):
     repo_info = fetch_repo_info(server, uuid)
     uuid = expand_uuid(server, uuid, repo_info=repo_info)
     return repo_info['DAG']['Nodes'][uuid]['Locked']
+
+
+############
+# copied from neuclease.util.util
+
+def uuids_match(uuid1, uuid2):
+    """
+    Return True if the two uuids are the equivalent.
+    
+    >>> assert uuids_match('abcd', 'abcdef') == True
+    >>> assert uuids_match('abc9', 'abcdef') == False
+    """
+    assert uuid1 and uuid2, "Empty UUID"
+    n = min(len(uuid1), len(uuid2))
+    return (uuid1[:n] == uuid2[:n])
+
+
+def fetch_file(url, output=None, chunksize=2**10, *, session=None):
+    """
+    Fetch a file from the given endpoint,
+    and save it to bytes, a file object, or a file path.
+
+    Args:
+        url:
+            Complete url to fetch from.
+        
+        output:
+            If None, file is returned in-memory, as bytes.
+            If str, it is interpreted as a path to which the file will be written.
+            Otherwise, must be a file object to write the bytes to (e.g. a BytesIO object).
+        
+        chunksize:
+            Data will be streamed in chunks, with the given chunk size.
+
+    Returns:
+        None, unless no output file object/path is provided,
+        in which case the fetched bytes are returned.
+    """
+    session = session or requests.Session()
+    with session.get(url, stream=True) as r:
+        r.raise_for_status()
+
+        if output is None:
+            return r.content
+
+        if isinstance(output, str):
+            # Create a file on disk and write to it.
+            with open(output, 'wb') as f:
+                for chunk in r.iter_content(chunksize):
+                    f.write(chunk)
+        else:
+            # output is a file object
+            for chunk in r.iter_content(chunksize):
+                output.write(chunk)
+
+
+def post_file(url, f, *, session=None):
+    """
+    Args:
+        url:
+            Complete url to which the file will be posted.
+        f:
+            The file to post.
+            Either a path to a file, a (binary) file object,
+            or a bytes object.
+    """
+    session = session or requests.Session()
+    if isinstance(f, str):
+        fname = f
+        with open(fname, 'rb') as f:
+            r = session.post(url, data=f)
+    else:
+        # Either bytes or a file object
+        r = session.post(url, data=f)
+
+    r.raise_for_status()

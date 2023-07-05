@@ -19,8 +19,13 @@ from . import dvid_api_wrapper
 from .common import post_tags  # noqa
 from .node import fetch_instance_info
 from .voxels import fetch_volume_box
-from ..util import (Timer, Grid, boxes_from_grid, round_box, tqdm_proxy, compute_parallel,
-                    gen_json_objects, encode_coords_to_uint64, decode_coords_from_uint64)
+from .lib.time import Timer 
+from .lib.grid import boxes_from_grid, Grid
+from .lib.box import round_box
+from .lib.progress import tqdm_proxy
+from .lib.parallel import compute_parallel
+from .lib.json import gen_json_objects
+from .lib.encode import encode_coords_to_uint64, decode_coords_from_uint64
 
 logger = logging.getLogger(__name__)
 

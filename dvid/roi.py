@@ -6,7 +6,12 @@ import ujson
 import numpy as np
 import pandas as pd
 
-from ..util import Timer, tqdm_proxy, extract_labels_from_volume, box_shape, extract_subvol, box_intersection, compute_parallel
+from .lib.time import Timer
+from .lib.progress import tqdm_proxy
+from .lib.box import box_intersection, box_shape, extract_subvol
+from .lib.parallel import compute_parallel
+from .voxels import extract_labels_from_volume 
+
 from . import dvid_api_wrapper, fetch_generic_json
 from .rle import runlength_decode_from_ranges, runlength_decode_from_ranges_to_mask, runlength_encode_mask_to_ranges
 
