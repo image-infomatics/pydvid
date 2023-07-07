@@ -1,0 +1,62 @@
+package:
+    name: pydvid
+
+  # If we're using a non-tagged revision, append '.postN' to the version
+  {% if GIT_DESCRIBE_NUMBER|int != 0 %}
+    version: {{GIT_DESCRIBE_TAG}}.post{{GIT_DESCRIBE_NUMBER}}
+  {% else %}
+    version: {{GIT_DESCRIBE_TAG}}
+  {% endif %}
+
+source:
+  path: ../
+
+build:
+  number: 0
+  string: {{PKG_BUILDNUM}}_g{{GIT_FULL_HASH[:7]}}
+  noarch: python
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python >=3.8,{{ python }}*
+    - setuptools
+
+  run:
+    - python {{ python }}*
+    - requests
+    - flask >=1.0
+    - numpy >=1.17
+    - h5py
+    - pandas <1.0
+    - numba >=0.45
+    - vigra
+    - libdvid-cpp >=0.3.post83
+    - dvidutils >=0.0.post81
+    - tqdm
+    - ujson
+    - pykafka
+    - networkx >=2.1
+    - asciitree
+    - protobuf
+
+    # Optional dependencies
+    #- graph-tool  # <-- Faster connected-components for very large graphs
+    #- nifty       # <-- Alternative cleaving algorithm "seeded-watershed"
+
+test:
+  requires:
+    - pytest
+    - dvid >=dvid-0.9.6.post64
+    - libdvid-cpp
+
+  imports:
+    - dvid
+
+  commands:
+    - pytest -s --tb=native --pyargs pydvid.tests
+
+about:
+  home: https://github.com/brain-map/pydvid
+  license: BSD (3-clause)
+  summary: Python tool for interacting with a DVID server.
