@@ -20,6 +20,27 @@ from . import fetch_mapping
 PandasLabelIndex = namedtuple("PandasLabelIndex", "blocks label last_mutid last_mod_time last_mod_user")
 
 
+def dataframe_group_to_label_index(group):
+    label = group['body'].iloc[0]
+    assert label > 0
+    label_index = dvid.LabelIndex()
+    label_index.label = label
+    label_index.last_mutid = 1
+    label_index.last_mod_time = datetime.now().isoformat()
+    label_index.last_mod_user = 'jwu'
+    for _, row in group.iterrows():
+        svid = np.int(row['segment_id'])
+        count = np.int(row['count'])
+        z = np.int(row['z'])
+        y = np.int(row['y'])
+        x = np.int(row['x'])
+        coords = np.array([[z, y, x]])
+        blockid = dvid.encode_block_coords(coords)[0]
+        label_index.blocks[blockid].counts[svid] = count
+
+    return label_index
+
+
 @dvid_api_wrapper
 def fetch_labelindex(server, uuid, instance, label, format='protobuf', *, missing='raise', session=None):
     """
