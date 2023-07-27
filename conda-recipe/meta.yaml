@@ -12,13 +12,11 @@ requirements:
   run:
     - python
     - requests
-    - flask >=1.0
     - numpy >=1.17
     - h5py
     - pandas <1.0
     - numba >=0.45
     - vigra
-    - libdvid-cpp >=0.3.post83
     - dvidutils >=0.0.post81
     - tqdm
     - ujson

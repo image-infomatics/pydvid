@@ -13,7 +13,7 @@ import pandas as pd
 
 from dvidutils import LabelMapper
 
-from neuclease.dvid.repo import find_repo_root
+from .repo import find_repo_root
 
 from . import dvid_api_wrapper
 from .common import post_tags  # noqa
