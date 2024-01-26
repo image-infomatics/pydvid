@@ -1,4 +1,5 @@
 import warnings
+from datetime import datetime
 from functools import partial
 from collections import namedtuple
 from collections.abc import Iterable, Collection
@@ -23,19 +24,19 @@ PandasLabelIndex = namedtuple("PandasLabelIndex", "blocks label last_mutid last_
 def dataframe_group_to_label_index(group):
     label = group['body'].iloc[0]
     assert label > 0
-    label_index = dvid.LabelIndex()
+    label_index = LabelIndex()
     label_index.label = label
     label_index.last_mutid = 1
     label_index.last_mod_time = datetime.now().isoformat()
     label_index.last_mod_user = 'jwu'
     for _, row in group.iterrows():
-        svid = np.int(row['segment_id'])
-        count = np.int(row['count'])
-        z = np.int(row['z'])
-        y = np.int(row['y'])
-        x = np.int(row['x'])
+        svid = int(row['segment_id'])
+        count = int(row['count'])
+        z = int(row['z'])
+        y = int(row['y'])
+        x = int(row['x'])
         coords = np.array([[z, y, x]])
-        blockid = dvid.encode_block_coords(coords)[0]
+        blockid = encode_block_coords(coords)[0]
         label_index.blocks[blockid].counts[svid] = count
 
     return label_index

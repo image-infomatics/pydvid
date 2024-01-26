@@ -1303,7 +1303,8 @@ def fetch_complete_mappings(server, uuid, instance, mutations=None, sort=None, *
 
 
 @dvid_api_wrapper
-def post_mappings(server, uuid, instance, mappings, mutid, *, batch_size=None, session=None):
+def post_mappings(server: str, uuid: str, instance: str, mappings, mutid, *, 
+        batch_size: int=None, session=None):
     """
     Post a list of SV-to-body mappings to DVID, provided as a ``pd.Series``.
     Will be converted to protobuf structures for upload.

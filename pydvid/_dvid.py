@@ -35,11 +35,11 @@ if platform.system() == "Darwin" and 'no_proxy' not in os.environ:
 
 DEFAULT_DVID_SESSIONS = {}
 DEFAULT_DVID_NODE_SERVICES = {}
-DEFAULT_APPNAME = "neuclease"
+DEFAULT_APPNAME = "pydvid"
 
 # Medium timeout for connections, long timeout for data
 # https://docs.python-requests.org/en/latest/user/advanced/#timeouts
-DEFAULT_DVID_TIMEOUT = Timeout(connect=3.05, read=120.0)
+DEFAULT_DVID_TIMEOUT = Timeout(connect=3.05, read=360.0)
 
 # FIXME: This should be eliminated or at least renamed
 DvidInstanceInfo = namedtuple("DvidInstanceInfo", "server uuid instance")
@@ -75,7 +75,7 @@ def _default_dvid_session_template():
     Note: To specify no timeout at all, set timeout=(None, None)
     """
     # If the connection fails, retry a couple times.
-    retries = Retry(connect=2, backoff_factor=0.1)
+    retries = Retry(connect=4, backoff_factor=0.1)
     adapter = DefaultTimeoutHTTPAdapter(max_retries=retries, timeout=DEFAULT_DVID_TIMEOUT)
 
     s = requests.Session()
